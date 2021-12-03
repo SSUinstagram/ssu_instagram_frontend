@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PointColor, PrimaryColor } from "../../Color/Color";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 // 대문자
 
 const LoginPanel = styled.div`
@@ -121,16 +122,20 @@ function LoginInput() {
   };
 
   const callLogin = async (e) => {
-    const result = await axios.get("/test");
-    console.log(result.data);
-    let users = await axios.get("/login");
-    console.log(users);
-    // e.preventDefault();
-    // api.Logoin(dispatch, form.email, form.password).then((data) => {
-    //   if (data.statusCode === 200) {
-    //     history.push("/");
-    //   }
-    // });
+    console.log(form);
+    try {
+      const result = await axios.get("/login", {
+        params: form,
+      });
+      const { id } = result.data.user;
+      Cookies.set("user-id", id);
+
+      console.log(id);
+
+      navigate("/home");
+    } catch (err) {
+      alert("등록된 회원이 없습니다.");
+    }
   };
 
   const callSignUpPage = (e) => {

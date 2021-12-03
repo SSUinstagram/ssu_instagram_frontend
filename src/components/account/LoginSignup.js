@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { PointColor, PrimaryColor } from "../../Color/Color";
+import axios from "axios";
 // import { userApi } from "../../api/index.js";
 
 const SignupPanel = styled.div`
@@ -146,7 +147,7 @@ const InputForm = styled.div`
         : "1px solid gray"};
     color: gray;
   }
-  .userName {
+  .name {
     padding-bottom: 18px;
     padding-left: 10px;
     font-size: 13px;
@@ -154,9 +155,7 @@ const InputForm = styled.div`
     flex-direction: column;
     border: 1px solid gray;
     border-left: ${(props) =>
-      props.inputStates.userName
-        ? "3px solid" + PrimaryColor
-        : "1px solid gray"};
+      props.inputStates.name ? "3px solid" + PrimaryColor : "1px solid gray"};
     color: gray;
   }
   .id {
@@ -183,7 +182,7 @@ function LoginSignup() {
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
-    userName: "",
+    name: "",
     id: "",
   });
 
@@ -204,9 +203,10 @@ function LoginSignup() {
     }
   }, [
     loginState.password,
-    loginState.confirmPassword,
+    loginState.name,
     loginState.email,
-    loginState.year,
+    loginState.id,
+    loginState.confirmPassword,
   ]);
 
   const onChange = (e) => {
@@ -221,15 +221,23 @@ function LoginSignup() {
     email: false,
     password: false,
     confirmPassword: false,
-    userName: false,
+    name: false,
     id: false,
   });
-
-  const clickJoin = () => {
-    // userApi.Signup(loginState).then(() => {
-    //   navigate("/");
-    // });
-    navigate("/");
+  const clickJoin = async () => {
+    const body = {
+      email: loginState.email,
+      password: loginState.password,
+      name: loginState.name,
+      id: loginState.id,
+    };
+    try {
+      let result = await axios.post("/signup", body);
+      console.log(result);
+      navigate("/");
+    } catch (e) {
+      alert("이메일 또는 아이디 중복");
+    }
   };
   const onClick = (inputType) => {
     switch (inputType) {
@@ -248,9 +256,9 @@ function LoginSignup() {
           confirmPassword: true,
         });
         break;
-      case "userName":
+      case "name":
         setInputStates({
-          userName: true,
+          name: true,
         });
         break;
       case "id":
@@ -329,14 +337,14 @@ function LoginSignup() {
             )}
           </label>
 
-          <label className="userName" onClick={() => onClick("userName")}>
+          <label className="name" onClick={() => onClick("name")}>
             이름
             <input
               type="text"
-              name="userName"
+              name="name"
               onChange={onChange}
               onBlur={() => {
-                setInputStates({ ...inputStates, userName: false });
+                setInputStates({ ...inputStates, name: false });
               }}
             />
           </label>
