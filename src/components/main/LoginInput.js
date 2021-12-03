@@ -123,6 +123,8 @@ function LoginInput() {
   const callLogin = async (e) => {
     const result = await axios.get("/test");
     console.log(result.data);
+    let users = await axios.get("/login");
+    console.log(users);
     // e.preventDefault();
     // api.Logoin(dispatch, form.email, form.password).then((data) => {
     //   if (data.statusCode === 200) {
