@@ -1,5 +1,5 @@
 import React from "react";
-import HomeComponent from "../components/home/Header";
+import HomeComponent from "../components/home/Home";
 function Home() {
   return (
     <div>

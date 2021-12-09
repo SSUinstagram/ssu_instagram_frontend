@@ -129,7 +129,6 @@ function LoginInput() {
       });
       const { id } = result.data.user;
       Cookies.set("user-id", id);
-
       console.log(id);
 
       navigate("/home");
