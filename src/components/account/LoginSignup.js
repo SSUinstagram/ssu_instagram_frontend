@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { PointColor, PrimaryColor } from "../../Color/Color";
 import axios from "axios";
-// import { userApi } from "../../api/index.js";
 
 const SignupPanel = styled.div`
   background-size: 100% 100%;

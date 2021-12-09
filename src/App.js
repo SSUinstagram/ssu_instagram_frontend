@@ -1,7 +1,16 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Main, Account, Home, Profile } from "./pages/index";
+import {
+  Main,
+  Account,
+  Home,
+  Profile,
+  PostNew,
+  PostEdit,
+  FollowPage,
+} from "./pages/index";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   return (
@@ -12,6 +21,9 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/new" element={<PostNew />} />
+          <Route path="/edit" element={<PostEdit />} />
+          <Route path="/follow" element={<FollowPage />} />
         </Routes>
       </BrowserRouter>
     </div>
