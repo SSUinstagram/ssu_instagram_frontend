@@ -24,7 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8030",
+  "proxy": "http://web.expertly.info:8029/",
   "eslintConfig": {
     "extends": [
       "react-app",
