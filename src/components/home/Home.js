@@ -6,6 +6,7 @@ import HomeContent from "./HomeContet";
 import axios from "axios";
 import { Pagination } from "react-bootstrap";
 import QueryString from "qs";
+import { useNavigate } from "react-router-dom";
 
 const SearchCheck = styled.div`
   width: 100%;
@@ -47,6 +48,7 @@ function Home() {
     text: "",
     type: "",
   });
+  const navigator = useNavigate();
   const [cardList, setCardList] = useState([]);
   const [refreshPage, setRefreshPage] = useState(false);
   const [page, setPage] = useState(0);
@@ -59,6 +61,7 @@ function Home() {
   });
 
   useEffect(() => {
+    console.log('new2');
     query?.text || query?.type
       ? filterSearch()
       : (async () => {
@@ -88,7 +91,7 @@ function Home() {
 
           setCardList(imageResult);
         })();
-  }, [page, refreshPage]);
+  }, [page, refreshPage,location]);
 
   const onRadioClick = async (e) => {
     setSearch({
@@ -140,7 +143,7 @@ function Home() {
   };
 
   const submitClick = () => {
-    window.location.replace(`/home?text=${search.text}&type=${search.type}`);
+    navigator(`/home?text=${search.text}&type=${search.type}`);
   };
 
   return (
