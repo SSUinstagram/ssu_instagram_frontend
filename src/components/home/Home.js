@@ -60,7 +60,7 @@ function Home() {
 
   useEffect(() => {
     query?.text || query?.type
-      ? submitClick()
+      ? filterSearch()
       : (async () => {
           //get total
           let pageRes = await axios.get("write/totalPage");
@@ -104,7 +104,7 @@ function Home() {
     });
   };
 
-  const submitClick = async () => {
+  const filterSearch = async () => {
     let pageRes = await axios.get("write/filterPage", {
       params: {
         type: query?.type || search.type,
@@ -139,6 +139,10 @@ function Home() {
     setRefreshPage(true);
   };
 
+  const submitClick = () => {
+    window.location.replace(`/home?text=${search.text}&type=${search.type}`);
+  };
+
   return (
     <div>
       <Header />
@@ -167,7 +171,7 @@ function Home() {
           Hashtag
         </label>
       </RadioButton>
-      <HomeContent CardList={cardList} />
+      <HomeContent cardList={cardList} />
       <PaginationLayout>
         <Pagination>
           {[...Array(totalPage).keys()].map((number) => (

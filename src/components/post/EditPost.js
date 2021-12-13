@@ -4,6 +4,7 @@ import moment from "moment";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Empty } from "antd";
 
 const PostPanel = styled.div`
   width: 100%;
@@ -21,14 +22,21 @@ const PostPanel = styled.div`
   div {
     margin: 10px;
   }
+  .exist {
+    border: none;
+    background-color: 0;
+    margin: 5px;
+  }
 `;
 
 function EditPost() {
   const location = useLocation();
   const id = location.state.id;
-  const [image, setImage] = useState([]);
+  const [imageFilenames, setImage] = useState([]);
   const navigate = useNavigate();
   const images = [];
+  const num = location.state.number;
+  const [fileLength, setLength] = useState(0);
   const [inputPost, setPost] = useState({
     number: "",
     id: "",
@@ -57,9 +65,19 @@ function EditPost() {
 
   const formData = new FormData();
 
+  const existFileClick = async (e) => {
+    let idx = e.target.id;
+    document.getElementById(idx).style.display = "none";
+    delete imageFilenames[idx];
+    let filtered = imageFilenames.filter(function (el) {
+      return el != null;
+    });
+    setImage(filtered);
+    setLength(filtered.length);
+  };
   const handleChangeFile = async (e) => {
-    if (e.target.files.length > 5) {
-      alert("파일 최대 5개만 선택가능");
+    if (e.target.files.length > 5 - imageFilenames.length) {
+      alert("파일 최대 5개만 선택가능 다시 선택하세요.");
     } else {
       for (let i = 0; i < 5; i++) {
         formData.append("img", e.target.files[i]);
@@ -82,10 +100,19 @@ function EditPost() {
       header: { "content-type": "multipart/form-data" },
     };
     try {
-      //let result = await axios.post("/write/uploadImages", formData, config);
       let result2 = await axios.post("/write/updatePost", inputPost);
+      formData.append("f1", imageFilenames[0]);
+      formData.append("f2", imageFilenames[1]);
+      formData.append("f3", imageFilenames[2]);
+      formData.append("f4", imageFilenames[3]);
+      formData.append("f5", imageFilenames[4]);
+      formData.append("num", num);
+      formData.append("fileLength", imageFilenames.length);
+      // let result = await axios.post("/write/updateImages", formData, config);
+      // console.log(result.data);
     } catch (err) {
-      alert("지원하지않는 파일존재\n 다른 이미지 파일을 넣어주세요.");
+      // alert("지원하지않는 파일존재\n 다른 이미지 파일을 넣어주세요.");
+      alert(err);
     }
     navigate("/home");
   };
@@ -115,9 +142,17 @@ function EditPost() {
         multiple="multiple"
       />
       <div>
+        <div>존재하는 파일이름 클릭 시 삭제됨</div>
         현재 존재하는파일
-        {image.map((fname, idx) => (
-          <button key={fname}>{fname}</button>
+        {imageFilenames.map((fname, idx) => (
+          <button
+            className="exist"
+            key={fname}
+            id={idx}
+            onClick={existFileClick}
+          >
+            {fname}
+          </button>
         ))}
       </div>
 

@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import {} from "react-bootstrap";
 import Card from "./Card";
 
@@ -11,11 +9,12 @@ const GridLayout = styled.div`
   place-items: center;
 `;
 
-function HomeContet({ CardList }) {
+function HomeContet({ cardList }) {
+  useEffect(() => {}, []);
   return (
     <div>
       <GridLayout>
-        {CardList.map((card, idx) => (
+        {cardList?.map((card, idx) => (
           <Card
             key={idx}
             number={card.number}

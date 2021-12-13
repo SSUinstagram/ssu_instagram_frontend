@@ -64,7 +64,7 @@ const SlideBtnLayout = styled.div`
   }
 `;
 
-function Card({ page, number, images, author, date, text, postInfo }) {
+function Card({ number, images, author, date, text }) {
   let hashtag = text.split(/(#[^\s]+)/g);
   const [imgArr, setImgArr] = useState([]);
   const navigator = useNavigate();
@@ -79,7 +79,7 @@ function Card({ page, number, images, author, date, text, postInfo }) {
       }
       setImgArr(tempImages);
     })();
-  }, []);
+  }, [number]);
 
   const hashtagArr = hashtag.filter((str) => {
     if (str !== "" && str !== " ") {
@@ -99,7 +99,9 @@ function Card({ page, number, images, author, date, text, postInfo }) {
   const imgSlideClick = async (e) => {
     const imgNum = e.target.value; //이미지 번호
     let mainImg = document.getElementById(`mainImg${number}`);
-    mainImg.src = `http://localhost:8030/write/test?image=${imgArr[imgNum]}`;
+    mainImg.src = `http://localhost:8030/write/test?image=${
+      images[0][`img${Number(imgNum) + 1}`]
+    }`;
   };
 
   const authorClick = (author) => {
@@ -126,7 +128,7 @@ function Card({ page, number, images, author, date, text, postInfo }) {
     <CardWrapper>
       <ImageSlide>
         <img
-          src={`http://localhost:8030/write/test?image=${imgArr[0]}`}
+          src={`http://localhost:8030/write/test?image=${images[0].img1}`}
           alt="alt"
           id={`mainImg${number}`}
           height="250px"
