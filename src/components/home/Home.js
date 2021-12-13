@@ -1,10 +1,11 @@
 import { React, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import HomeContent from "./HomeContet";
 import axios from "axios";
 import { Pagination } from "react-bootstrap";
+import QueryString from "qs";
 
 const SearchCheck = styled.div`
   width: 100%;
@@ -47,42 +48,49 @@ function Home() {
     type: "",
   });
   const [cardList, setCardList] = useState([]);
-
+  const [refreshPage, setRefreshPage] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
 
+  const location = useLocation();
+  const query = QueryString.parse(location.search, {
+    ignoreQueryPrefix: true,
+    // 문자열 맨 앞의 ?를 생력
+  });
+
   useEffect(() => {
-    (async () => {
-      //get total
-      let pageRes = await axios.get("write/totalPage");
-      const total = pageRes.data;
-      setTotalPage(total);
-      //data fetch get post
-      const result = await axios.get("write/getPost", {
-        params: { page: page },
-      });
-      console.log(result.data);
+    query?.text || query?.type
+      ? filterSearch()
+      : (async () => {
+          //get total
+          let pageRes = await axios.get("write/totalPage");
+          const total = pageRes.data;
+          setTotalPage(total);
+          //data fetch get post
+          const result = await axios.get("write/getPost", {
+            params: { page: page },
+          });
 
-      //images
-      const image = await axios.get("write/getImage", {
-        params: { page: page },
-      });
-      console.log(image.data);
+          //images
+          const image = await axios.get("write/getImage", {
+            params: { page: page },
+          });
 
-      const imageResult = result.data?.map((item) => {
-        const images = image.data?.filter((img) => img.number === item.number);
-        return {
-          ...item,
-          images,
-        };
-      });
+          const imageResult = result.data?.map((item) => {
+            const images = image.data?.filter(
+              (img) => img.number === item.number
+            );
+            return {
+              ...item,
+              images,
+            };
+          });
 
-      console.log("imageresult", imageResult);
-      setCardList(imageResult);
-    })();
-  }, [page, search]);
+          setCardList(imageResult);
+        })();
+  }, [page, refreshPage]);
 
-  const onRadioClick = (e) => {
+  const onRadioClick = async (e) => {
     setSearch({
       ...search,
       type: e.target.value,
@@ -96,8 +104,43 @@ function Home() {
     });
   };
 
-  const submitClick = async (e) => {
-    const result = await axios.post("/search", { params: search });
+  const filterSearch = async () => {
+    let pageRes = await axios.get("write/filterPage", {
+      params: {
+        type: query?.type || search.type,
+        text: query?.text || search.text,
+        page: page || 0,
+      },
+    });
+    const total = pageRes.data;
+
+    setTotalPage(total);
+
+    let postRes = await axios.get("write/filterGetPost", {
+      params: {
+        type: query?.type || search.type,
+        text: query?.text || search.text,
+        page: page || 0,
+      },
+    });
+    const postInfo = postRes.data;
+
+    Promise.all(
+      postInfo.map(async (item) => {
+        const imageRes = await axios("write/getEachImages", {
+          params: { number: item.number },
+        });
+        return {
+          ...item,
+          images: [imageRes.data],
+        };
+      })
+    ).then((item) => setCardList(item));
+    setRefreshPage(true);
+  };
+
+  const submitClick = () => {
+    window.location.replace(`/home?text=${search.text}&type=${search.type}`);
   };
 
   return (
@@ -105,7 +148,7 @@ function Home() {
       <Header />
       <SearchCheck>
         <input placeholder="검색어" type="text" onChange={onSearchTextChange} />
-        <button type="submit" onChange={submitClick}>
+        <button type="submit" onClick={submitClick}>
           검색
         </button>
       </SearchCheck>
@@ -128,7 +171,7 @@ function Home() {
           Hashtag
         </label>
       </RadioButton>
-      <HomeContent CardList={cardList} />
+      <HomeContent cardList={cardList} />
       <PaginationLayout>
         <Pagination>
           {[...Array(totalPage).keys()].map((number) => (

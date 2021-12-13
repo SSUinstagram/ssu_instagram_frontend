@@ -33,7 +33,6 @@ function Follow({ followingUser }) {
   }, [isFollowing]);
 
   const followButtonCilck = async () => {
-    console.log(updateFollow);
     if (isFollowing) {
       setIsFollowing(false);
       let result = await axios.post("/follow/update", updateFollow);

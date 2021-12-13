@@ -9,6 +9,7 @@ import {
   PostNew,
   PostEdit,
   FollowPage,
+  MessagePage,
 } from "./pages/index";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/new" element={<PostNew />} />
           <Route path="/edit" element={<PostEdit />} />
           <Route path="/follow" element={<FollowPage />} />
+          <Route path="/msg" element={<MessagePage />} />
         </Routes>
       </BrowserRouter>
     </div>
