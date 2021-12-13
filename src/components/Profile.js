@@ -25,7 +25,7 @@ function Profile() {
 
   useEffect(() => {
     (async () => {
-      console.log("??");
+      ("??");
       const following = await axios.get("follow/getFollowingNum", {
         params: { user_id: user_id },
       });

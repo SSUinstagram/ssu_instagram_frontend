@@ -122,14 +122,12 @@ function LoginInput() {
   };
 
   const callLogin = async (e) => {
-    console.log(form);
     try {
       const result = await axios.get("/login", {
         params: form,
       });
       const { id } = result.data.user;
       Cookies.set("user-id", id);
-      console.log(id);
 
       navigate("/home");
     } catch (err) {

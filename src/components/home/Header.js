@@ -31,7 +31,10 @@ function Header() {
   return (
     <>
       <HeaderPanel>
-        <Button variant="primary" onClick={() => navigate("/home")}>
+        <Button
+          variant="primary"
+          onClick={() => window.location.replace("/home")}
+        >
           Home
         </Button>{" "}
         <Button variant="secondary" onClick={() => navigate("/new")}>

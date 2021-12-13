@@ -232,7 +232,6 @@ function LoginSignup() {
     };
     try {
       let result = await axios.post("/signup", body);
-      console.log(result);
       navigate("/");
     } catch (e) {
       alert("이메일 또는 아이디 중복");

@@ -62,7 +62,7 @@ function NewPost() {
     } catch (err) {
       alert("지원하지않는 파일존재\n 다른 이미지 파일을 넣어주세요.");
     }
-    //navigate("/Home");
+    navigate("/Home");
   };
 
   return (
