@@ -105,12 +105,11 @@ function Card({ number, images, author, date, text }) {
   };
 
   const authorClick = (author) => {
-    window.location.replace(`/home?text=${author}&type=id`);
+    navigator(`/home?text=${author}&type=id`, { replace: true });
   };
   const hashtagClick = (str) => {
     let text = str.slice(1);
-    window.location.replace(`/home?text=${text}&type=hashtag`);
-    navigator(`/home?text=${text}&type=hashtag`);
+    navigator(`/home?text=${text}&type=hashtag`, { replace: true });
   };
 
   const editClick = () => {

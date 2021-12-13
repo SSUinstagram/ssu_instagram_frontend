@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import HomeContent from "./HomeContet";
 import axios from "axios";
@@ -43,6 +43,7 @@ const PaginationLayout = styled.div`
 `;
 
 function Home() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState({
     text: "",
     type: "",
@@ -88,7 +89,7 @@ function Home() {
 
           setCardList(imageResult);
         })();
-  }, [page, refreshPage]);
+  }, [page, refreshPage, location]);
 
   const onRadioClick = async (e) => {
     setSearch({
@@ -140,7 +141,9 @@ function Home() {
   };
 
   const submitClick = () => {
-    window.location.replace(`/home?text=${search.text}&type=${search.type}`);
+    navigate(`/home?text=${search.text}&type=${search.type}`, {
+      replace: true,
+    });
   };
 
   return (

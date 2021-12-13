@@ -33,7 +33,7 @@ function Header() {
       <HeaderPanel>
         <Button
           variant="primary"
-          onClick={() => window.location.replace("/home")}
+          onClick={() => navigate("/home", { replace: true })}
         >
           Home
         </Button>{" "}
