@@ -99,9 +99,7 @@ function Card({ number, images, author, date, text }) {
   const imgSlideClick = async (e) => {
     const imgNum = e.target.value; //이미지 번호
     let mainImg = document.getElementById(`mainImg${number}`);
-    mainImg.src = `http://localhost:8030/write/test?image=${
-      images[0][`img${Number(imgNum) + 1}`]
-    }`;
+    mainImg.src = `./write/test?image=${images[0][`img${Number(imgNum) + 1}`]}`;
   };
 
   const authorClick = (author) => {
@@ -127,7 +125,7 @@ function Card({ number, images, author, date, text }) {
     <CardWrapper>
       <ImageSlide>
         <img
-          src={`http://localhost:8030/write/test?image=${images[0].img1}`}
+          src={`./write/test?image=${images[0].img1}`}
           alt="alt"
           id={`mainImg${number}`}
           height="250px"
