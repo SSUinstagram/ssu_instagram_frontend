@@ -6,7 +6,7 @@ function Card({ id, images, author, date, text }) {
   return (
     <CardWrapper>
       <img
-        src={`http://localhost:8030/write/test?image=${images[0].img1}`}
+        src={`http://localhost:8029/write/test?image=${images[0].img1}`}
         alt="alt"
         height="250px"
         width="250px"
