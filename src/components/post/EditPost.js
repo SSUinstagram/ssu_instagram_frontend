@@ -100,7 +100,7 @@ function EditPost() {
       header: { "content-type": "multipart/form-data" },
     };
     try {
-      let result2 = await axios.post("/write/updatePost", inputPost);
+      let result2 = await axios.put("/write/updatePost", inputPost);
       formData.append("f1", imageFilenames[0]);
       formData.append("f2", imageFilenames[1]);
       formData.append("f3", imageFilenames[2]);
@@ -119,7 +119,7 @@ function EditPost() {
 
   const deleteOnClick = async () => {
     try {
-      let result = await axios.post("/write/deletePost", inputPost);
+      let result = await axios.delete("/write/deletePost", inputPost);
       navigate("/home");
     } catch {}
   };
